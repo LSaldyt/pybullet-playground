@@ -5,8 +5,8 @@ import pybullet_data
 
 serverMode = p.GUI # GUI/DIRECT
 robotUrdfPath = "./urdf/sisbot.urdf"
-#robotUrdfPath = "./urdf/robotiq_c2.urdf"
-#robotUrdfPath = "./urdf/ur5.urdf"
+# robotUrdfPath = "./urdf/robotiq_c2.urdf"
+# robotUrdfPath = "./urdf/ur5.urdf"
 
 # connect to engine servers
 physicsClient = p.connect(serverMode)
@@ -25,7 +25,7 @@ print("Loading robot from {}".format(robotUrdfPath))
 robotID = p.loadURDF(robotUrdfPath, robotStartPos, robotStartOrn)
 
 # get joint information
-numJoints = p.getNumJoints(robotID) 
+numJoints = p.getNumJoints(robotID)
 print("Number of joints: {}".format(numJoints))
 jointTypeList = ["REVOLUTE", "PRISMATIC", "SPHERICAL", "PLANAR", "FIXED"]
 for i in range(numJoints):

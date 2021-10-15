@@ -5,6 +5,8 @@ import pybullet as p
 import pybullet_data
 import utils
 
+from time import sleep
+
 serverMode = p.GUI # GUI/DIRECT
 sisbotUrdfPath = "./urdf/sisbot.urdf"
 
@@ -22,7 +24,7 @@ robotStartPos = [0,0,0]
 robotStartOrn = p.getQuaternionFromEuler([0,0,0])
 print("----------------------------------------")
 print("Loading robot from {}".format(sisbotUrdfPath))
-robotID = p.loadURDF(sisbotUrdfPath, robotStartPos, robotStartOrn, 
+robotID = p.loadURDF(sisbotUrdfPath, robotStartPos, robotStartOrn,
                      flags=p.URDF_USE_INERTIA_FROM_FILE)
 joints, controlRobotiqC2, controlJoints, mimicParentName = utils.setup_sisbot(p, robotID)
 eefID = 7 # ee_link
@@ -46,11 +48,12 @@ try:
                 controlRobotiqC2(controlMode=p.POSITION_CONTROL, targetPosition=pose)
             else:
                 p.setJointMotorControl2(robotID, joint.id, p.POSITION_CONTROL,
-                                        targetPosition=pose, force=joint.maxForce, 
+                                        targetPosition=pose, force=joint.maxForce,
                                         maxVelocity=joint.maxVelocity)
         rXYZ = p.getLinkState(robotID, eefID)[0] # real XYZ
         print("x_err= {:.2f}, y_err= {:.2f}, z_err= {:.2f}".format(*list(map(ABSE,[x,y,z],rXYZ))))
         p.stepSimulation()
+        sleep(0.005)
     p.disconnect()
 except:
     p.disconnect()
